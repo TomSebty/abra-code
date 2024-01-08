@@ -20,6 +20,12 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing...'
+		def test= sh (script: 'python web-service_tests.py', returnStdout: true).toString().trim()
+		println "${test}"
+		if (!test.contains("All good")){
+			currentBuild.result = 'ABORTED'
+                        error('The unit tests have failed. Please fix any issues and try again.')
+		}
             }
         }
     }
