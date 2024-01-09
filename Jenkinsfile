@@ -14,7 +14,6 @@ pipeline {
 		    }
 		}
             }
-        }
         stage('Linting') {
             steps {
                 echo 'Linting...'
@@ -28,7 +27,6 @@ pipeline {
                     }
                 }
             }
-        }
 	stage('Unit Testing'){
             steps{
                 script{
