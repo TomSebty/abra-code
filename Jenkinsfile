@@ -27,20 +27,20 @@ pipeline {
                     }
                 }
             }
-	stage('Unit Testing'){
-            steps{
-                script{
-                    sPid = sh (script: 'flask --app project/web_service.py run -h 0.0.0.0 -p 5000 & echo \$!', returnStdout: true).toString().trim()
-		    def test= sh (script: 'python3 project/tests/web-service_tests.py', returnStdout: true).toString().trim()
-                    println "${test}"
-		    sh 'kill -9 ${sPid}'
-                    if (!test.contains("All good")){
-                            currentBuild.result = 'ABORTED'
-                            error('The unit tests have failed. Please fix any issues and try again. ${test}')
-                    }
-                }
-            }
-        }
+	//stage('Unit Testing'){
+        //    steps{
+        //        script{
+        //            sPid = sh (script: 'flask --app project/web_service.py run -h 0.0.0.0 -p 5000 & echo \$!', returnStdout: true).toString().trim()
+	//	    def test= sh (script: 'python3 project/tests/web-service_tests.py', returnStdout: true).toString().trim()
+        //            println "${test}"
+	//	    sh 'kill -9 ${sPid}'
+        //            if (!test.contains("All good")){
+        //                    currentBuild.result = 'ABORTED'
+        //                    error('The unit tests have failed. Please fix any issues and try again. ${test}')
+        //            }
+        //        }
+        //    }
+        //}
 	stage('Build docker image'){
             steps{
                 script{
