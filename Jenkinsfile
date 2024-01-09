@@ -30,8 +30,8 @@ pipeline {
 	stage('Unit Testing'){
             steps{
                 script{
-                    sh 'python3 web_service.py & sPid=$$'
-		    def test= sh (script: 'python3 web-service_tests.py', returnStdout: true).toString().trim()
+                    sh 'python3 project/web_service.py & sPid=$$'
+		    def test= sh (script: 'python3 project/tests/web-service_tests.py', returnStdout: true).toString().trim()
                     println "${test}"
 		    sh 'kill -9 $sPid'
                     if (!test.contains("All good")){
@@ -46,7 +46,7 @@ pipeline {
                 script{
                     sh 'docker stop web-service || true && docker rm web-service || true' // Stop and remove container if running
                     sh 'docker image prune' // Remove the previously built image
-                    sh 'docker build -t tom-web-service:1.0 -t tom-web-service:latest.' // Build the new version. Need to use commit ID for tagging
+                    sh 'docker build -t tom-web-service:1.0 -t tom-web-service:latest .project/' // Build the new version. Need to use commit ID for tagging
                 }
             }
         }
