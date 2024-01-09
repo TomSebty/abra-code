@@ -5,7 +5,7 @@ pipeline {
         stage('Code Format') {
             steps {
                 script {
-			def format = sh (script: 'python3 -m pycodestyle project/web_service.py', returnStdout: true)
+			def format = sh (script: 'python -m pycodestyle project/web_service.py', returnStdout: true)
 			println "${format}"
                         if (!format == ""){
                                 currentBuild.result = 'ABORTED'
@@ -18,7 +18,7 @@ pipeline {
             steps {
                 echo 'Linting...'
 		script {
-                        def lint = sh (script: 'python3 -m pylint project/web_service.py', returnStdout: true)
+                        def lint = sh (script: 'python -m pylint project/web_service.py', returnStdout: true)
                         println "${lint}"
                         if (!lint == ""){
                                 currentBuild.result = 'ABORTED'
@@ -31,7 +31,7 @@ pipeline {
             steps{
                 script{
                     sh 'python3 web_service.py & sPid=$$'
-		    def test= sh (script: 'python3 web-service_tests.py', returnStdout: true).toString().trim()
+		    def test= sh (script: 'python web-service_tests.py', returnStdout: true).toString().trim()
                     println "${test}"
 		    sh 'kill -9 $sPid'
                     if (!test.contains("All good")){
@@ -62,7 +62,7 @@ pipeline {
             steps {
                 echo 'Testing...'
 		script {
-			def test= sh (script: 'python3 web-service_tests.py', returnStdout: true).toString().trim()
+			def test= sh (script: 'python web-service_tests.py', returnStdout: true).toString().trim()
 			println "${test}"
 			if (!test.contains("All good")){
 				currentBuild.result = 'ABORTED'
