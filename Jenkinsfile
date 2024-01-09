@@ -30,7 +30,7 @@ pipeline {
 	stage('Unit Testing'){
             steps{
                 script{
-                    sh 'python3 project/web_service.py & sPid=$$'
+                    sh 'flask --app project/web_service.py run -h 0.0.0.0 -p 5000 & sPid=$$'
 		    def test= sh (script: 'python3 project/tests/web-service_tests.py', returnStdout: true).toString().trim()
                     println "${test}"
 		    sh 'kill -9 $sPid'
