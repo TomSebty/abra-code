@@ -3,9 +3,11 @@ pipeline {
 
     stages {
 	stage('Setup') {
-		// In a real life scenario, I would have had all of these packages preinstalled
-		//This stage exists only to aboid rebuilding the jenkins image again and to save time.
-		sh 'pip install pylint pycodestyle' 
+		steps {
+			// In a real life scenario, I would have had all of these packages preinstalled
+			//This stage exists only to aboid rebuilding the jenkins image again and to save time.
+			sh 'pip install pylint pycodestyle' 
+		}
 	}
         stage('Code Format') {
             steps {
