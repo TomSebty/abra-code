@@ -46,7 +46,7 @@ pipeline {
                 script{
                     sh 'docker stop web-service || true && docker rm web-service || true' // Stop and remove container if running
                     sh 'docker image prune' // Remove the previously built image
-                    sh 'docker build -t tom-web-service:1.0 -t tom-web-service:latest .project/' // Build the new version. Need to use commit ID for tagging
+                    sh 'docker build -t tom-web-service:1.0 -t tom-web-service:latest -f project/Dockerfile .' // Build the new version. Need to use commit ID for tagging
                 }
             }
         }
