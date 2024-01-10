@@ -55,6 +55,7 @@ pipeline {
                 echo 'Deploying...'
 		script{
                     sh 'docker run -p 5000:5000 --name web-service -d tom-web-service:latest'
+		    sh 'docker ps -a'
                 }
             }
         }
