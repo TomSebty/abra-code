@@ -54,7 +54,8 @@ pipeline {
             steps {
                 echo 'Deploying...'
 		script{
-                    sh 'docker run -p 5000:5000 --name web-service -d tom-web-service:latest'
+                    //sh 'docker run -p 5000:5000 --name web-service -d tom-web-service:latest'
+		    docker.image('tom-web-service:latest').withRun('-p 5000:5000 --name web-service') {}
 		    sh 'docker ps -a'
                 }
             }
@@ -63,12 +64,17 @@ pipeline {
             steps {
                 echo 'Testing...'
 		script {
-			def test= sh (script: 'python3 project/tests/web-service_tests.py', returnStdout: true).toString().trim()
-			println "${test}"
-			if (!test.contains("All good")){
-				currentBuild.result = 'ABORTED'
-	                        error('The unit tests have failed. Please fix any issues and try again. ${test}')
+		    try {
+		        def test= sh (script: 'python3 project/tests/web-service_tests.py', returnStdout: true).toString().trim()
+		        println "${test}"
+		        if (!test.contains("All good")){
+		            currentBuild.result = 'ABORTED'
+		       	    error('The unit tests have failed. Please fix any issues and try again. ${test}')
 			}
+		    }
+        	    finally {
+		        sh 'docker stop web-service || true && docker rm web-service || true'
+	            }
 		}
             }
         }
