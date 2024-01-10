@@ -54,7 +54,7 @@ pipeline {
             steps {
                 echo 'Deploying...'
 		script{
-                    sh 'docker run --rm -p 8081:8080 --name web-service -d tom-web-service:latest'
+                    sh 'docker run -p 5000:5000 --name web-service -d tom-web-service:latest'
                 }
             }
         }
@@ -62,7 +62,7 @@ pipeline {
             steps {
                 echo 'Testing...'
 		script {
-			def test= sh (script: 'python3 web-service_tests.py', returnStdout: true).toString().trim()
+			def test= sh (script: 'python3 project/tests/web-service_tests.py', returnStdout: true).toString().trim()
 			println "${test}"
 			if (!test.contains("All good")){
 				currentBuild.result = 'ABORTED'
