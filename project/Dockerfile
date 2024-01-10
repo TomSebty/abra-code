@@ -1,6 +1,7 @@
-from python:3.6.4-slim-jessie
+from python:3.6.4
 COPY . /app
-RUN rm -rf /app/tests
+WORKDIR /app
+RUN rm -rf ./tests
 RUN pip install -r requirements.txt
-EXPOSE 8082
-ENTRYPOINT ["python", "/app/web-service.py"]
+EXPOSE 5000
+ENTRYPOINT ["python", "./web_service.py"]
